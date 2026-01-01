@@ -64,7 +64,7 @@ FEATURE_NAME_MAP = {
 # =================================================
 @st.cache_data
 def load_data():
-    return pd.read_csv("Dataset.csv")
+    return pd.read_csv("Dataset.csv", low_memory=False)
 
 # =================================================
 # Preprocessing
