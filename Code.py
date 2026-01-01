@@ -63,8 +63,11 @@ FEATURE_NAME_MAP = {
 # Load Dataset
 # =================================================
 @st.cache_data
+@st.cache_data
 def load_data():
-    return pd.read_csv("Dataset.csv", low_memory=False)
+    url = "https://huggingface.co/datasets/vidyadheesha-m-pandurangi/Cybersecurity-Datasets/resolve/main/Dataset.csv"
+    return pd.read_csv(url, low_memory=False)
+
 
 # =================================================
 # Preprocessing
