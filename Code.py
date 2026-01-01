@@ -6,9 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-# =================================================
 # Logging Configuration
-# =================================================
+
 logging.basicConfig(
     filename="alerts.log",
     level=logging.WARNING,
@@ -16,17 +15,15 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-# =================================================
 # Streamlit Config
-# =================================================
+
 st.set_page_config(
     page_title="AI-Based Network Intrusion Detection System",
     layout="wide"
 )
 
-# =================================================
 # Global CSS (apply ONCE)
-# =================================================
+
 st.markdown(
     """
     <style>
@@ -42,9 +39,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# =================================================
 # Feature Name Mapping
-# =================================================
+
 FEATURE_NAME_MAP = {
     "avg fwd segment size": "Average Forward Segment Size (bytes per segment)",
     "fwd packet length max": "Forward Packet Length – Maximum (bytes)",
@@ -59,19 +55,16 @@ FEATURE_NAME_MAP = {
     "fwd iat max": "Forward Inter-Arrival Time – Maximum"
 }
 
-# =================================================
 # Load Dataset
-# =================================================
+
 @st.cache_data
 @st.cache_data
 def load_data():
     url = "https://huggingface.co/datasets/vidyadheesha-m-pandurangi/Cybersecurity-Datasets/resolve/main/Dataset.csv"
     return pd.read_csv(url, low_memory=False)
 
-
-# =================================================
 # Preprocessing
-# =================================================
+
 def preprocess_data(df):
     df = df.copy()
     df.columns = df.columns.str.strip().str.lower()
@@ -98,9 +91,8 @@ def preprocess_data(df):
 
     return train_test_split(X, y, test_size=0.2, random_state=42)
 
-# =================================================
 # Train Model
-# =================================================
+
 @st.cache_resource
 def train_model(X_train, y_train):
     model = RandomForestClassifier(
@@ -112,16 +104,14 @@ def train_model(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
-# =================================================
 # Sidebar
-# =================================================
+
 st.sidebar.title("⚙️ Control Panel")
 show_data = st.sidebar.checkbox("📊 Show Dataset")
 train_button = st.sidebar.button("🚀 Train Model Now")
 
-# =================================================
 # Header
-# =================================================
+
 st.markdown(
     """
     <h1 style="text-align:center;">🔐 AI-Powered Network Intrusion Detection System</h1>
@@ -132,18 +122,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# =================================================
 # Load Data
-# =================================================
+
 df = load_data()
 
 if show_data:
     st.subheader("Dataset Preview")
     st.dataframe(df.head(50))
 
-# =================================================
 # Training Section
-# =================================================
+
 if train_button:
     with st.spinner("Training model..."):
         X_train, X_test, y_train, y_test = preprocess_data(df)
@@ -163,9 +151,8 @@ if train_button:
 
     st.success(f"✅ Model Trained Successfully | Accuracy: {acc:.2%}")
 
-# =================================================
-# Live Traffic Simulator (ONLY AFTER TRAINING)
-# =================================================
+# Live Traffic Simulator 
+
 if st.session_state.get("model_trained", False):
 
     st.markdown(
@@ -189,8 +176,6 @@ if st.session_state.get("model_trained", False):
                 value=0.0,
                 help=label
             )
-
-    # -------- CENTERED BUTTON (CORRECTLY INDENTED) --------
     with st.container():
         st.markdown("<br>", unsafe_allow_html=True)
         col_left, col_center, col_right = st.columns([1, 1, 1])
